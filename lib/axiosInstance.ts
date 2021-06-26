@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-    baseURL: "http://domacanas.hopto.org:11145",
+    baseURL: "https://domacanas.hopto.org:11145",
     withCredentials: true
 });
 
