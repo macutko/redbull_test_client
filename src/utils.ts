@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import content from './content.json';
 
 export function shuffle(array: IContent[]) {
@@ -32,9 +33,29 @@ export interface IContent {
     previewUrl: string
 }
 
-export function getUniqueEntries(): IContent[] {
-    const newContent = content.filter((v, i, a) => a.findIndex(t => (t.id === v.id)) === i)
 
+export function getAllContentIds() {
+    const newContent = content.filter((v, i, a) => a.findIndex(t => (t.id === v.id)) === i)
+    return newContent.map((item: IContent) => {
+        return {
+            params: {
+                id: item.id
+            }
+        }
+    })
+
+}
+
+
+export function getContentData(id: string) {
+    const r = content.filter(obj => {
+        return obj.id === id
+    })
+    return r[0]
+}
+
+export function getUniqueContent(): IContent[] {
+    const newContent = content.filter((v, i, a) => a.findIndex(t => (t.id === v.id)) === i)
     let ids = []
     for (let i = 0; i < newContent.length; i++) {
         ids.push(content.indexOf(newContent[i]))
@@ -42,3 +63,10 @@ export function getUniqueEntries(): IContent[] {
 
     return ids.map((item) => content[item])
 }
+
+
+export const useLoaded = () => {
+    const [loaded, setLoaded] = useState(false);
+    useEffect(() => setLoaded(true), []);
+    return loaded;
+};

@@ -1,26 +1,21 @@
-import { CircularProgress, makeStyles } from "@material-ui/core";
+import { CircularProgress, Container, makeStyles } from "@material-ui/core";
 import React, { useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import CustomCard from "./CustomCard";
-import { getUniqueEntries, shuffle } from "./utils";
+import { getUniqueContent, shuffle } from "./utils";
 
 
-const useStyles = makeStyles(() => ({
-    gridList: {
-        height: "100%",
-        width: "100%"
+const useStyles = makeStyles({
+    feedContainer: {
+        maxWidth: "50vw",
+        alignContent: "center"
     },
-    icon: {
-        color: 'rgba(255, 255, 255, 0.54)',
-    },
-}));
-
-
+});
 
 const ImageGrid = () => {
     const classes = useStyles();
 
-    const data = shuffle(getUniqueEntries())
+    const data = shuffle(getUniqueContent())
 
     const [count, setCount] = useState({
         prev: 0,
@@ -46,9 +41,11 @@ const ImageGrid = () => {
             style={{ overflow: "hidden" }}
             loader={<CircularProgress color="secondary" />}
         >
-            {current && current.map((item) => (
-                <CustomCard key={item.id} {...item} />
-            ))}
+            <Container className={classes.feedContainer}>
+                {current && current.map((item) => (
+                    <CustomCard key={item.id} {...item} /> 
+                ))}
+            </Container>
         </InfiniteScroll>
 
     );
