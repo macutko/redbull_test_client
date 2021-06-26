@@ -8,7 +8,7 @@ import { getUniqueContent, shuffle } from "../lib/utils";
 const useStyles = makeStyles({
     feedContainer: {
         maxWidth: "50vw",
-        alignContent: "center"
+        alignContent: "center",
     },
 });
 

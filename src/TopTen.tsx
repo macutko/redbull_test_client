@@ -1,27 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import {createStyles, makeStyles, Theme} from '@material-ui/core/styles';
+import {createStyles, makeStyles} from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import IconButton from '@material-ui/core/IconButton';
 import InfoIcon from '@material-ui/icons/Info';
 import {axiosInstance} from "../lib/axiosInstance";
 import {getContentData, IContent} from "../lib/utils";
 
-const useStyles = makeStyles((theme: Theme) =>
+const useStyles = makeStyles(() =>
     createStyles({
-        root: {
-            display: 'flex',
-            flexWrap: 'wrap',
-            justifyContent: 'space-around',
-            overflow: 'hidden',
-            backgroundColor: theme.palette.background.paper,
-        },
-        gridList: {
-            width: 500,
-            height: 450,
-        },
         icon: {
             color: 'rgba(255, 255, 255, 0.54)',
         },
@@ -29,13 +17,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 type ResponseTen = {
     _id: string,
-    score: number
+    avg_score: number
 }
 
 export default function TopTen() {
     const classes = useStyles();
     const [tileData, setTileData] = useState<IContent[]>([])
-    const [scores, setScores] = useState([])
+    const [_scores, setScores] = useState<ResponseTen[]>([])
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
@@ -51,39 +39,37 @@ export default function TopTen() {
 
 
     return (
-        <div className={classes.root}>
-            <GridList cellHeight={250} className={classes.gridList}>
-                <GridListTile key="Subheader" cols={2} style={{height: 'auto'}}>
-                    <ListSubheader component="div">December</ListSubheader>
-                </GridListTile>
-                {loading ? null :
-                    (
-                        tileData.map((tile) => (
-                            <GridListTile key={tile.id}>
 
-                                {tile.mediaType === "video" ? <img src={tile.previewUrl} alt={tile.title}/> :
-                                    <img src={tile.contentUrl} alt={tile.title}/>}
-                                <a href={`/content/${tile.id}`}>
-                                    <GridListTileBar
-                                        title={tile.title}
-                                        subtitle={<span>by: {tile.source}</span>}
-                                        actionIcon={
+        <GridList cellHeight={250}>
+            {loading ? null :
+                (
+                    tileData.map((tile) => (
+                        <GridListTile key={tile.id}>
 
-                                            <IconButton aria-label={`info about ${tile.title}`}
-                                                        className={classes.icon}>
-                                                <InfoIcon/>
-                                            </IconButton>
+                            {tile.mediaType === "video" ? <img src={tile.previewUrl} alt={tile.title}/> :
+                                <img src={tile.contentUrl} alt={tile.title}/>}
+                            <a href={`/content/${tile.id}`}>
+                                <GridListTileBar
+                                    title={tile.title}
+                                    subtitle={<span>by: {tile.source}</span>}
+                                    actionIcon={
 
-                                        }
-                                    />
-                                </a>
+                                        <IconButton aria-label={`info about ${tile.title}`}
+                                                    className={classes.icon}>
+                                            <p>{_scores[tileData.indexOf(tile)].avg_score}</p>
+                                            <InfoIcon/>
+                                        </IconButton>
 
-                            </GridListTile>
+                                    }
+                                />
+                            </a>
+
+                        </GridListTile>
 
 
-                        ))
-                    )}
-            </GridList>
-        </div>
+                    ))
+                )}
+        </GridList>
+
     );
 }

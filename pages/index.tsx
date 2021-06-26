@@ -7,23 +7,26 @@ import TopTen from "../src/TopTen";
 
 export default function Index() {
     const [topTen, setTopTen] = useState<boolean>(false)
-
-
     return (
-        <Layout>
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <Chip variant="outlined" color="primary" label={"Top"} avatar={<Avatar>10</Avatar>}
-                          onClick={() => setTopTen(!topTen)}/>
-                    <Chip color="primary" label={"Infinite scroll"} onClick={() => setTopTen(!topTen)}/>
+        <Layout home={true}>
+            <div style={{padding: 20}}>
+                <Grid container spacing={5}>
+                    <Grid item xs={12}>
+                        <Chip variant={!topTen ? "outlined" : "default"} color="primary" label={"Top"}
+                              avatar={<Avatar>10</Avatar>}
+                              onClick={() => setTopTen(!topTen)}/>
+                        <Chip color="primary" variant={topTen ? "outlined" : "default"} label={"Infinite scroll"}
+                              onClick={() => setTopTen(!topTen)}/>
 
+
+                    </Grid>
+
+                    <Grid item xs={12}>
+                        {topTen ? <TopTen/> : <ImageGrid/>}
+                    </Grid>
 
                 </Grid>
-                <Grid item xs={12}>
-                    {topTen ? <TopTen/> : <ImageGrid/>}
-                </Grid>
-
-            </Grid>
+            </div>
         </Layout>
     );
 }
