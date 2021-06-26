@@ -1,5 +1,4 @@
 import { Box, Link, makeStyles, Typography } from '@material-ui/core'
-import MuiLink from '@material-ui/core/Link'
 import Head from 'next/head'
 import React from 'react'
 
