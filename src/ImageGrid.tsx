@@ -3,7 +3,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import React from "react";
 import content from './content.json';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     gridList: {
     },
     icon: {
