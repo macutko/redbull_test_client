@@ -1,47 +1,56 @@
-import { GridList, GridListTile, GridListTileBar, IconButton, ListSubheader, makeStyles } from "@material-ui/core";
-import InfoIcon from '@material-ui/icons/Info';
-import React from "react";
-import content from './content.json';
+import { CircularProgress, makeStyles } from "@material-ui/core";
+import React, { useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
+import CustomCard from "./CustomCard";
+import { getUniqueEntries, shuffle } from "./utils";
+
 
 const useStyles = makeStyles(() => ({
     gridList: {
+        height: "100%",
+        width: "100%"
     },
     icon: {
         color: 'rgba(255, 255, 255, 0.54)',
     },
 }));
 
+
+
 const ImageGrid = () => {
     const classes = useStyles();
 
-    return (
-        <GridList cellHeight={180} className={classes.gridList}>
-            <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
-                <ListSubheader component="div">December</ListSubheader>
-            </GridListTile>
+    const data = shuffle(getUniqueEntries())
 
-            {content.map((tile) => (
-                <GridListTile key={tile.id}>
-                    {
-                        tile.mediaType === "image" ?
-                            <img src={tile.contentUrl} alt={tile.title} loading={"lazy"} />
-                            :
-                            <video controls preload="none" poster={tile.previewUrl} >
-                                <source src={tile.contentUrl} />
-                            </video>
-                    }
-                    <GridListTileBar
-                        title={tile.title}
-                        subtitle={<span>by: {tile.source}</span>}
-                        actionIcon={
-                            <IconButton aria-label={`info about ${tile.title}`} className={classes.icon}>
-                                <InfoIcon />
-                            </IconButton>
-                        }
-                    />
-                </GridListTile>
+    const [count, setCount] = useState({
+        prev: 0,
+        next: 6
+    })
+    const [hasMore, setHasMore] = useState(true);
+    const [current, setCurrent] = useState(data.slice(count.prev, count.next))
+    const getMoreData = () => {
+        if (current.length === data.length) {
+            setHasMore(false);
+            return;
+        }
+        setTimeout(() => {
+            setCurrent(current.concat(data.slice(count.prev + 6, count.next + 6)))
+        }, 1000)
+        setCount((prevState) => ({ prev: prevState.prev + 6, next: prevState.next + 6 }))
+    }
+    return (
+        <InfiniteScroll
+            dataLength={current.length}
+            next={getMoreData}
+            hasMore={hasMore}
+            style={{ overflow: "hidden" }}
+            loader={<CircularProgress color="secondary" />}
+        >
+            {current && current.map((item) => (
+                <CustomCard key={item.id} {...item} />
             ))}
-        </GridList>
-    )
+        </InfiniteScroll>
+
+    );
 }
 export default ImageGrid;

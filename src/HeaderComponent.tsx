@@ -5,7 +5,9 @@ const useStyles = makeStyles((theme) => ({
     lander: {
         height: "90vh",
         backgroundColor: theme.palette.primary.main,
-        width: "100vw"
+        width: "100vw",
+        margin: 0,
+        maxWidth: "100%",
     }
 }));
 
