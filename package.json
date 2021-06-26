@@ -12,7 +12,8 @@
     "react": "latest",
     "react-dom": "latest",
     "react-infinite-scroll-component": "^6.1.0",
-    "reactjs-media": "^1.5.1"
+    "reactjs-media": "^1.5.1",
+    "axios": "^0.21.1"
   },
   "scripts": {
     "dev": "next",

@@ -2,7 +2,7 @@ import { CircularProgress, Container, makeStyles } from "@material-ui/core";
 import React, { useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import CustomCard from "./CustomCard";
-import { getUniqueContent, shuffle } from "./utils";
+import { getUniqueContent, shuffle } from "../lib/utils";
 
 
 const useStyles = makeStyles({

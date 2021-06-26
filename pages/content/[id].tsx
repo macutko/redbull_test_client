@@ -1,12 +1,13 @@
-import { Box, Chip, makeStyles, Typography } from "@material-ui/core";
+import {Box, Chip, makeStyles, Typography} from "@material-ui/core";
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import CategoryIcon from '@material-ui/icons/Category';
-import Rating from '@material-ui/lab/Rating';
-import React, { useState } from "react";
-import { ReactVideo } from "reactjs-media";
+import React from "react";
+import {ReactVideo} from "reactjs-media";
 import Layout from "../../src/Layout";
-import { getAllContentIds, getContentData, IContent } from "../../src/utils";
+import {getAllContentIds, getContentData, IContent} from "../../lib/utils";
+import CustomRating from "../../src/CustomRating";
+import ItemAvgRating from "../../src/ItemAvgRating";
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -32,14 +33,11 @@ const useStyles = makeStyles((theme) => ({
         textAlign: "center",
         justifyContent: "center",
     },
-    description: {
-
-    }
+    description: {}
 }));
 
 export default function RBContent(data: IContent) {
     const classes = useStyles()
-    const [value, setValue] = useState(0);
 
     return (
 
@@ -48,7 +46,7 @@ export default function RBContent(data: IContent) {
                 <Grid container spacing={2}
                 >
                     <Grid item xs={12}>
-                        <Box mx={20} mt={2} className={classes.image} >
+                        <Box mx={20} mt={2} className={classes.image}>
                             {data.mediaType === "video" ?
 
                                 <ReactVideo
@@ -63,7 +61,7 @@ export default function RBContent(data: IContent) {
 
                                 :
 
-                                <img className={classes.img} alt={data.title} src={data.contentUrl} />
+                                <img className={classes.img} alt={data.title} src={data.contentUrl}/>
 
                             }
                         </Box>
@@ -71,15 +69,9 @@ export default function RBContent(data: IContent) {
                     </Grid>
 
                     <Grid item xs={12}
-                        className={classes.center}
+                          className={classes.center}
                     >
-                        <Rating
-                            name="simple-controlled"
-                            value={value}
-                            onChange={(_event, newValue) => {
-                                if (newValue) setValue(newValue);
-                            }}
-                        />
+                        <CustomRating {...data}/>
 
                     </Grid>
 
@@ -105,12 +97,15 @@ export default function RBContent(data: IContent) {
                             </Box>
                             {data.topic ?
                                 <Box my={2}>
-                                    <Chip style={{ padding: 5 }} variant="outlined" color="secondary" label={data.topic} icon={<CategoryIcon />} /> </Box> : null
+                                    <Chip style={{padding: 5}} variant="outlined" color="secondary" label={data.topic}
+                                          icon={<CategoryIcon/>}/> </Box> : null
                             }
                         </Box>
                     </Grid>
 
                     <Grid item xs={4}>
+                        <ItemAvgRating id={data.id}/>
+
                         {data.length ?
                             <Typography variant="body2" gutterBottom>
                                 <b>Length: </b> {data.length}
@@ -132,6 +127,7 @@ export default function RBContent(data: IContent) {
 
     )
 }
+
 export async function getStaticPaths() {
     // retun a l;st of possible value for id
     const paths = getAllContentIds()
@@ -141,7 +137,7 @@ export async function getStaticPaths() {
     }
 }
 
-export async function getStaticProps({ params }: { params: { id: string } }) {
+export async function getStaticProps({params}: { params: { id: string } }) {
     const postData = getContentData(params.id)
     return {
         props: {

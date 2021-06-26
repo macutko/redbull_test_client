@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import content from './content.json';
+import content from '../src/content.json';
 
 export function shuffle(array: IContent[]) {
 

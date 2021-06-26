@@ -1,6 +1,6 @@
 import { Box, Button, Card, CardActions, CardContent, CardMedia, Link, makeStyles, Typography } from "@material-ui/core";
 import React from "react";
-import { IContent, useLoaded } from "./utils";
+import { IContent, useLoaded } from "../lib/utils";
 
 const useStyles = makeStyles({
     cardContainer: {
