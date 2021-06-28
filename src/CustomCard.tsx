@@ -1,10 +1,12 @@
-import { Box, Button, Card, CardActions, CardContent, CardMedia, Link, makeStyles, Typography } from "@material-ui/core";
+import { Link } from "@material-ui/core";
+import {Card, CardActionArea, CardContent, CardMedia, makeStyles, Typography} from "@material-ui/core";
 import React from "react";
-import { IContent, useLoaded } from "../lib/utils";
+import {IContent, useLoaded} from "../lib/utils";
 
 const useStyles = makeStyles({
     cardContainer: {
-        width: "100%"
+        width: "100%",
+        height: "100%"
     },
 });
 
@@ -15,34 +17,35 @@ const CustomCard = (data: IContent) => {
     const loaded = useLoaded();
     return (
         loaded ?
-            <Box mt={1}>
-                <Card className={classes.cardContainer} >
+            <Card className={classes.cardContainer}>
+                <Link href={`/content/${data.id}`}>
+                    <CardActionArea>
+                        <CardMedia
+                            component="img"
+                            alt={data.title}
+                            height="250"
+                            image={data.previewUrl ? data.previewUrl : data.contentUrl}
+                            title={data.title}
+                        />
+                        <CardContent>
+                            <Typography gutterBottom variant="h5" component="h2">
+                                {data.title}
+                            </Typography>
+                            {data.description ?
+                                <Typography variant="body2" color="textSecondary" component="p">
+                                    {data.description?.length > 130 ? data.description.slice(0, 130) + "..." : data.description}
+                                </Typography>
+                                : null}
+                        </CardContent>
+                    </CardActionArea>
+                </Link>
+                {/*<CardActions>*/}
 
-                    <CardMedia
-                        component="img"
-                        alt={data.title}
-                        height="250"
-                        image={data.previewUrl ? data.previewUrl : data.contentUrl}
-                        title={data.title}
-                    />
-                    <CardContent>
-                        <Typography gutterBottom variant="h5" component="h2">
-                            {data.title}
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                            {data.description && data.description?.length > 130 ? data.description.slice(0, 130) + "..." : data.description}
-                        </Typography>
-                    </CardContent>
-
-                    <CardActions>
-                        <Link href={`/content/${data.id}`}>
-                            <Button size="small" color="primary">
-                                More
-                            </Button>
-                        </Link>
-                    </CardActions>
-                </Card>
-            </Box>
+                {/*<Button size="small" color="primary">*/}
+                {/*    More*/}
+                {/*</Button>*/}
+                {/*</CardActions>*/}
+            </Card>
             : null
 
     )

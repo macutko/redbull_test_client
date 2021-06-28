@@ -1,55 +1,75 @@
-import {Box, makeStyles, Typography} from '@material-ui/core'
+import {AppBar, Box, FormControlLabel, Link, Switch, Toolbar, Typography} from '@material-ui/core'
 import Head from 'next/head'
 import React from 'react'
+import ArrowBackOutlinedIcon from '@material-ui/icons/ArrowBack';
 
 export const siteTitle = 'RedBull CaseStudy'
 
-const useStyles = makeStyles(() => ({
-    homeLander: {
-        height: "90vh",
-        // backgroundColor: theme.palette.primary.main,
-        width: "100vw",
-        marginBottom: 10,
-        maxWidth: "100%",
-    },
-    normalLander: {
-        height: "20vh",
-        // backgroundColor: theme.palette.primary.main,
-        width: "100vw",
-        marginBottom: 10,
-        maxWidth: "100%",
-    }
-}));
 
-type LayoutProps = {
-    children: React.ReactNode,
-    home?: boolean
+interface Props {
+    window?: () => Window;
+    children: React.ReactElement;
+    topTen?: boolean;
+    setTopTen?: () => void
 }
 
-export default function Layout({children, home = false}: LayoutProps) {
-    const classes = useStyles();
+export default function Layout(props: Props) {
+
 
     return (
         <Box>
             <Head>
-                <link rel="icon" href="/favicon.ico"/>
-                <meta
-                    name="description"
-                    content="Present content for RedBull via NextJS"
-                />
-
-                <meta name="og:title" content={siteTitle}/>
+                <title>RedBull awesome showcase</title>
+                <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width"/>
             </Head>
             <header>
 
             </header>
 
-            <Box className={home ? classes.homeLander : classes.normalLander}>
-                <h1>RedBull test </h1>
-            </Box>
+            <AppBar position="static">
+                <Toolbar>
+                    <Box minWidth={"10vw"}>
+                        {
+                            props.topTen !== undefined ?
 
-            <main>{children}</main>
+                                <FormControlLabel
+                                    control={
+                                        <Switch
+                                            checked={props.topTen}
+                                            onChange={props.setTopTen}
+                                            name="TopTen"
+                                            inputProps={{'aria-label': 'secondary checkbox'}}
+                                        />
+                                    }
+                                    label={props.topTen ? "Top Ten" : "All content"}
+                                />
 
+                                :
+                                <Link href={`/`}>
+                                    <ArrowBackOutlinedIcon color={"error"}/>
+                                </Link>
+                        }
+                    </Box>
+
+
+                </Toolbar>
+            </AppBar>
+
+
+            <main>
+                {props.children}
+            </main>
+
+            {/*<ScrollTop {...props}>*/
+            }
+            {/*    <Fab color="secondary" size="small" aria-label="scroll back to top">*/
+            }
+            {/*        <KeyboardArrowUpIcon/>*/
+            }
+            {/*    </Fab>*/
+            }
+            {/*</ScrollTop>*/
+            }
             <Box my={2}>
                 <Typography variant="body2" color="textSecondary" align="center">
                     {'Copyright © '}

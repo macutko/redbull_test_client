@@ -33,7 +33,9 @@ const useStyles = makeStyles((theme) => ({
         textAlign: "center",
         justifyContent: "center",
     },
-    description: {}
+    description: {},
+    topicChip: {padding: 5,
+    color: theme.palette.error.main}
 }));
 
 export default function RBContent(data: IContent) {
@@ -41,88 +43,90 @@ export default function RBContent(data: IContent) {
 
     return (
 
-        <Layout home={false}>
-            <Paper className={classes.paper} elevation={3}>
-                <Grid container spacing={2}
-                >
-                    <Grid item xs={12}>
-                        <Box mx={20} mt={2} className={classes.image}>
-                            {data.mediaType === "video" ?
-
-                                <ReactVideo
-                                    src={data.contentUrl}
-                                    poster={data.previewUrl}
-                                    primaryColor="red"
-                                    className={classes.img}
-                                />
-                                // <video controls preload="none" poster={data.previewUrl} className={classes.img}>
-                                //     <source src={data.contentUrl} />
-                                // </video>
-
-                                :
-
-                                <img className={classes.img} alt={data.title} src={data.contentUrl}/>
-
-                            }
-                        </Box>
-
-                    </Grid>
-
-                    <Grid item xs={12}
-                          className={classes.center}
+        <Layout>
+            <Box my={3}>
+                <Paper className={classes.paper} elevation={3}>
+                    <Grid container spacing={2}
                     >
-                        <CustomRating {...data}/>
+                        <Grid item xs={12}>
+                            <Box mx={20} mt={2} className={classes.image}>
+                                {data.mediaType === "video" ?
 
-                    </Grid>
+                                    <ReactVideo
+                                        src={data.contentUrl}
+                                        poster={data.previewUrl}
+                                        primaryColor="red"
+                                        className={classes.img}
+                                    />
+                                    // <video controls preload="none" poster={data.previewUrl} className={classes.img}>
+                                    //     <source src={data.contentUrl} />
+                                    // </video>
 
-                    <Grid item xs={8} className={classes.description}>
-                        <Box pl={5}>
-                            <Box my={1}>
-                                <Typography gutterBottom variant="subtitle1">
-                                    {data.title}
-                                </Typography>
+                                    :
+
+                                    <img className={classes.img} alt={data.title} src={data.contentUrl}/>
+
+                                }
                             </Box>
 
-                            {data.description ?
+                        </Grid>
+
+                        <Grid item xs={12}
+                              className={classes.center}
+                        >
+                            <CustomRating {...data}/>
+
+                        </Grid>
+
+                        <Grid item xs={8} className={classes.description}>
+                            <Box pl={5}>
                                 <Box my={1}>
-                                    <Typography variant="body2" gutterBottom>
-                                        {data.description}
+                                    <Typography gutterBottom variant="subtitle1">
+                                        {data.title}
                                     </Typography>
                                 </Box>
-                                : null}
-                            <Box my={1}>
-                                <Typography variant="body2" color="textSecondary">
-                                    Source: {data.source}
-                                </Typography>
+
+                                {data.description ?
+                                    <Box my={1}>
+                                        <Typography variant="body2" gutterBottom>
+                                            {data.description}
+                                        </Typography>
+                                    </Box>
+                                    : null}
+                                <Box my={1}>
+                                    <Typography variant="body2" color="textSecondary">
+                                        Source: {data.source}
+                                    </Typography>
+                                </Box>
+                                {data.topic ?
+                                    <Box my={2}>
+                                        <Chip  className={classes.topicChip} variant="outlined" color="primary"
+                                              label={data.topic}
+                                              icon={<CategoryIcon color={"primary"}/>}/> </Box> : null
+                                }
                             </Box>
-                            {data.topic ?
-                                <Box my={2}>
-                                    <Chip style={{padding: 5}} variant="outlined" color="secondary" label={data.topic}
-                                          icon={<CategoryIcon/>}/> </Box> : null
-                            }
-                        </Box>
-                    </Grid>
+                        </Grid>
 
-                    <Grid item xs={4}>
-                        <ItemAvgRating id={data.id}/>
+                        <Grid item xs={4}>
+                            <ItemAvgRating id={data.id}/>
 
-                        {data.length ?
-                            <Typography variant="body2" gutterBottom>
-                                <b>Length: </b> {data.length}
-                            </Typography>
-                            : null}
+                            {data.length ?
+                                <Typography variant="body2" gutterBottom>
+                                    <b>Length: </b> {data.length}
+                                </Typography>
+                                : null}
 
-                        {data.aspectRatio ?
-                            <Typography variant="body2" gutterBottom>
-                                <b>Aspect Ratio: </b> {data.aspectRatio}
-                            </Typography>
-                            : null}
+                            {data.aspectRatio ?
+                                <Typography variant="body2" gutterBottom>
+                                    <b>Aspect Ratio: </b> {data.aspectRatio}
+                                </Typography>
+                                : null}
+
+                        </Grid>
 
                     </Grid>
-
-                </Grid>
-            </Paper>
-
+                </Paper>
+            </Box>
         </Layout>
 
     )

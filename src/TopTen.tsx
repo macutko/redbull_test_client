@@ -1,27 +1,17 @@
 import React, {useEffect, useState} from 'react';
-import {createStyles, makeStyles} from '@material-ui/core/styles';
-import GridList from '@material-ui/core/GridList';
-import GridListTile from '@material-ui/core/GridListTile';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
-import IconButton from '@material-ui/core/IconButton';
-import InfoIcon from '@material-ui/icons/Info';
 import {axiosInstance} from "../lib/axiosInstance";
 import {getContentData, IContent} from "../lib/utils";
+import CustomCard from "./CustomCard";
+import {Container, Grid, Typography} from "@material-ui/core";
+import Rating from "@material-ui/lab/Rating";
 
-const useStyles = makeStyles(() =>
-    createStyles({
-        icon: {
-            color: 'rgba(255, 255, 255, 0.54)',
-        },
-    }),
-);
 type ResponseTen = {
     _id: string,
     avg_score: number
 }
 
-export default function TopTen() {
-    const classes = useStyles();
+export default function TopTen(): JSX.Element {
+
     const [tileData, setTileData] = useState<IContent[]>([])
     const [_scores, setScores] = useState<ResponseTen[]>([])
     const [loading, setLoading] = useState(false)
@@ -39,37 +29,34 @@ export default function TopTen() {
 
 
     return (
+        loading ? <div/> :
+            <Container>
+                <Grid container spacing={3}>
+                    {
+                        tileData.map((item: IContent) => (
+                            <>
+                                <Grid key={`${item.id}_grid_num`} item xs={4}
+                                      style={{textAlign: "center"}}>
+                                    <Typography variant="h1" component="h2" gutterBottom>
+                                        {tileData.indexOf(item) + 1}.
+                                    </Typography>
+                                    <Rating
+                                        name="simple-controlled"
+                                        readOnly
+                                        value={_scores[tileData.indexOf(item)].avg_score}
+                                    />
 
-        <GridList cellHeight={250}>
-            {loading ? null :
-                (
-                    tileData.map((tile) => (
-                        <GridListTile key={tile.id}>
+                                </Grid>
 
-                            {tile.mediaType === "video" ? <img src={tile.previewUrl} alt={tile.title}/> :
-                                <img src={tile.contentUrl} alt={tile.title}/>}
-                            <a href={`/content/${tile.id}`}>
-                                <GridListTileBar
-                                    title={tile.title}
-                                    subtitle={<span>by: {tile.source}</span>}
-                                    actionIcon={
-
-                                        <IconButton aria-label={`info about ${tile.title}`}
-                                                    className={classes.icon}>
-                                            <p>{_scores[tileData.indexOf(tile)].avg_score}</p>
-                                            <InfoIcon/>
-                                        </IconButton>
-
-                                    }
-                                />
-                            </a>
-
-                        </GridListTile>
-
-
-                    ))
-                )}
-        </GridList>
-
+                                <Grid key={`${item.id}_grid`} item xs={6}>
+                                    <CustomCard key={`${item.id}_card`} {...item} />
+                                </Grid>
+                                <Grid key={`${item.id}_spacer`} item xs={2} >
+                                </Grid>
+                            </>
+                        ))
+                    }
+                </Grid>
+            </Container>
     );
 }
