@@ -2,7 +2,7 @@ import axios from 'axios';
 
 
 const axiosInstance = axios.create({
-    baseURL: "https://asterdigital.tech",
+    baseURL: "http://asterdigital.tech:8080",
     withCredentials: true
 });
 

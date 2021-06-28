@@ -19,7 +19,7 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start -p 60201",
+    "start": "next start -p 80",
     "post-update": "echo \"codesandbox preview only, need an update\" && yarn upgrade --latest"
   },
   "devDependencies": {
