@@ -17,7 +17,7 @@ export default function TopTen(): JSX.Element {
     const [loading, setLoading] = useState(false)
 
     useEffect(() => {
-        axiosInstance.get('rating/topTen').then(res => {
+        axiosInstance.get('/rating/topTen').then(res => {
             setLoading(false)
             setScores(res.data)
             setTileData(res.data.map((item: ResponseTen) => getContentData(item._id)))
@@ -34,13 +34,14 @@ export default function TopTen(): JSX.Element {
                 <Grid container spacing={3}>
                     {
                         tileData.map((item: IContent) => (
-                            <>
+                            <React.Fragment key={`${item.id}_fragment`}>
                                 <Grid key={`${item.id}_grid_num`} item md={4}
                                       style={{textAlign: "center", width: "100%"}}>
-                                    <Typography variant="h1" component="h2" gutterBottom>
+                                    <Typography variant="h1" component="h2" gutterBottom key={`${item.id}_typo`}>
                                         {tileData.indexOf(item) + 1}.
                                     </Typography>
                                     <Rating
+                                        key={`${item.id}_rating`}
                                         name="simple-controlled"
                                         readOnly
                                         value={Math.round(_scores[tileData.indexOf(item)].avg_score)}
@@ -53,7 +54,7 @@ export default function TopTen(): JSX.Element {
                                 </Grid>
                                 <Grid key={`${item.id}_spacer`} item md={2}>
                                 </Grid>
-                            </>
+                            </React.Fragment>
                         ))
                     }
                 </Grid>
