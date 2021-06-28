@@ -35,8 +35,8 @@ export default function TopTen(): JSX.Element {
                     {
                         tileData.map((item: IContent) => (
                             <>
-                                <Grid key={`${item.id}_grid_num`} item xs={4}
-                                      style={{textAlign: "center"}}>
+                                <Grid key={`${item.id}_grid_num`} item md={4}
+                                      style={{textAlign: "center", width: "100%"}}>
                                     <Typography variant="h1" component="h2" gutterBottom>
                                         {tileData.indexOf(item) + 1}.
                                     </Typography>
@@ -48,10 +48,10 @@ export default function TopTen(): JSX.Element {
 
                                 </Grid>
 
-                                <Grid key={`${item.id}_grid`} item xs={6}>
+                                <Grid key={`${item.id}_grid`} item md={6} style={{width: "100%"}}>
                                     <CustomCard key={`${item.id}_card`} {...item} />
                                 </Grid>
-                                <Grid key={`${item.id}_spacer`} item xs={2}>
+                                <Grid key={`${item.id}_spacer`} item md={2}>
                                 </Grid>
                             </>
                         ))

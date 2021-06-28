@@ -1,7 +1,9 @@
-import {AppBar, Box, FormControlLabel, Link, Switch, Toolbar, Typography} from '@material-ui/core'
+import {AppBar, Box, Fab, FormControlLabel, Link, Switch, Toolbar, Typography} from '@material-ui/core'
 import Head from 'next/head'
 import React from 'react'
 import ArrowBackOutlinedIcon from '@material-ui/icons/ArrowBack';
+import ScrollTop from "./ScrollTop";
+import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
 export const siteTitle = 'RedBull CaseStudy'
 
@@ -60,16 +62,16 @@ export default function Layout(props: Props) {
                 {props.children}
             </main>
 
-            {/*<ScrollTop {...props}>*/
-            }
-            {/*    <Fab color="secondary" size="small" aria-label="scroll back to top">*/
-            }
-            {/*        <KeyboardArrowUpIcon/>*/
-            }
-            {/*    </Fab>*/
-            }
-            {/*</ScrollTop>*/
-            }
+            <ScrollTop {...props}>
+
+                <Fab color="secondary" size="small" aria-label="scroll back to top">
+
+                    <KeyboardArrowUpIcon/>
+
+                </Fab>
+
+            </ScrollTop>
+
             <Box my={2}>
                 <Typography variant="body2" color="textSecondary" align="center">
                     {'Copyright © '}

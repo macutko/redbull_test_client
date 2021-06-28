@@ -124,7 +124,7 @@ const ImageGrid = () => {
             <div className={classes.root}>
                 <Grid container spacing={3}>
                     {current && current.map((item) => (
-                        <Grid key={`${item.id}_grid`} item xs={4}>
+                        <Grid key={`${item.id}_grid`} item md={4}>
                             <CustomCard key={`${item.id}_card`} {...item} />
                         </Grid>
                     ))}
