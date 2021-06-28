@@ -1,10 +1,11 @@
-import {fade, Grid, InputBase, makeStyles, Theme} from "@material-ui/core";
+import {Box, fade, Grid, InputBase, makeStyles, Theme} from "@material-ui/core";
 import React, {useEffect, useState} from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import CustomCard from "./CustomCard";
-import {getUniqueContent, shuffle} from "../lib/utils";
+import {getUniqueContent} from "../lib/utils";
 import {createStyles} from "@material-ui/core/styles";
 import SearchIcon from '@material-ui/icons/Search';
+import Fuse from "fuse.js";
 
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -14,10 +15,12 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     },
     search: {
         position: 'relative',
+        paddingTop: 3,
+        paddingBottom: 3,
         borderRadius: theme.shape.borderRadius,
-        backgroundColor: fade(theme.palette.common.white, 0.15),
+        backgroundColor: fade(theme.palette.primary.light, 0.15),
         '&:hover': {
-            backgroundColor: fade(theme.palette.common.white, 0.25),
+            backgroundColor: fade(theme.palette.primary.light, 0.25),
         },
         marginRight: theme.spacing(2),
         marginLeft: 0,
@@ -51,8 +54,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     },
 }));
 
-const data = shuffle(getUniqueContent())
-
+const origData = getUniqueContent()
 
 const ImageGrid = () => {
     const classes = useStyles();
@@ -62,11 +64,30 @@ const ImageGrid = () => {
         next: 6
     })
     const [hasMore, setHasMore] = useState(true);
+    const [data, setData] = useState(origData)
     const [current, setCurrent] = useState(data.slice(count.prev, count.next))
+    const fuse = new Fuse(data, {
+        keys: ["title"],
+    });
+    const [value, setValue] = useState('')
 
     useEffect(() => {
         setCurrent(current.concat(data.slice(count.prev + 6, count.next + 6)))
     }, [count])
+
+    useEffect(() => {
+        setCount(() => ({prev: 0, next: 6}))
+        setCurrent(data.slice(0, 6))
+    }, [data])
+
+    useEffect(() => {
+        if (value != '') {
+            setData(fuse.search(value).map((item) => item.item))
+            return;
+        } else {
+            setData(origData)
+        }
+    }, [value])
 
     const getMoreData = () => {
         if (current.length === data.length) {
@@ -83,21 +104,22 @@ const ImageGrid = () => {
             style={{overflow: "hidden"}}
             loader={null}
         >
-
-            <div className={classes.search}>
-                <div className={classes.searchIcon}>
-                    <SearchIcon/>
+            <Box mt={1}>
+                <div className={classes.search}>
+                    <div className={classes.searchIcon}>
+                        <SearchIcon/>
+                    </div>
+                    <InputBase
+                        placeholder="Search…"
+                        classes={{
+                            root: classes.inputRoot,
+                            input: classes.inputInput,
+                        }}
+                        inputProps={{'aria-label': 'search'}}
+                        onChange={(e) => setValue(e.target.value)}
+                    />
                 </div>
-                <InputBase
-                    placeholder="Search…"
-                    classes={{
-                        root: classes.inputRoot,
-                        input: classes.inputInput,
-                    }}
-                    inputProps={{'aria-label': 'search'}}
-                />
-            </div>
-
+            </Box>
 
             <div className={classes.root}>
                 <Grid container spacing={3}>

@@ -43,7 +43,7 @@ export default function TopTen(): JSX.Element {
                                     <Rating
                                         name="simple-controlled"
                                         readOnly
-                                        value={_scores[tileData.indexOf(item)].avg_score}
+                                        value={Math.round(_scores[tileData.indexOf(item)].avg_score)}
                                     />
 
                                 </Grid>
@@ -51,7 +51,7 @@ export default function TopTen(): JSX.Element {
                                 <Grid key={`${item.id}_grid`} item xs={6}>
                                     <CustomCard key={`${item.id}_card`} {...item} />
                                 </Grid>
-                                <Grid key={`${item.id}_spacer`} item xs={2} >
+                                <Grid key={`${item.id}_spacer`} item xs={2}>
                                 </Grid>
                             </>
                         ))
